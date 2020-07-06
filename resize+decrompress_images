@@ -1,0 +1,17 @@
+from PIL import Image
+import os
+
+def resizeImage(imageName, inPath, outPath, basewidth, imgQuality, optimize):
+    img = Image.open(inPath+imageName)
+    wpercent = (basewidth/float(img.size[0]))
+    hsize = int((float(img.size[1])*float(wpercent)))
+    img = img.resize((basewidth,hsize), Image.ANTIALIAS)
+    img.save(outPath+imageName, optimize=optimize,quality=imgQuality)
+
+def iterateFolder(inPath,outPath,baseWidth, imgQuality, optimize):
+    for image_path in os.listdir(inPath):
+        input_path = os.path.join(inPath, image_path)
+        imageName = input_path.split('/',1)[1]
+        resizeImage(imageName, inPath, outPath, basewidth, imgQuality, optimize)
+    
+iterateFolder("images/", "new_images/", 800, 70, True)
