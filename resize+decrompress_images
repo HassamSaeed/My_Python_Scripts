@@ -1,23 +1,28 @@
 # This script does 4 things:
 # 1. loops through all images from an input diretcory directory
 # 2. Then resizes the images according to the given size
-# 3. Then decompress the images to reduce their sizes
+# 3. Then decompress the images to reduce their sizes (which includes conversion to jpg)
 # 4. And lastly it saves them in the output folder.
+
+#results > Folder Size Reduced from 51.8mb to 3.21mb
 
 from PIL import Image
 import os
 
-def resizeImage(imageName, inPath, outPath, basewidth, imgQuality, optimize):
-    img = Image.open(inPath+imageName)
+def resizeImage(imageName, imageExt, inPath, outPath, basewidth, imgQuality, optimize):
+    img = Image.open(inPath+imageName+imageExt)
     wpercent = (basewidth/float(img.size[0]))
     hsize = int((float(img.size[1])*float(wpercent)))
     img = img.resize((basewidth,hsize), Image.ANTIALIAS)
-    img.save(outPath+imageName, optimize=optimize,quality=imgQuality)
+    non_transparent=Image.new('RGB',img.size,(255,255,255,255))
+    non_transparent.paste(img,(0,0),img)
+    non_transparent.save(outPath+imageName+'.jpg', quality=imgQuality, optimize=optimize)
 
 def iterateFolder(inPath,outPath,baseWidth, imgQuality, optimize):
     for image_path in os.listdir(inPath):
         input_path = os.path.join(inPath, image_path)
-        imageName = input_path.split('/',1)[1]
-        resizeImage(imageName, inPath, outPath, basewidth, imgQuality, optimize)
+        imageName = input_path.split('/',1)[1].rsplit('.',1)[0]
+        imageExt = '.'+input_path.split('/',1)[1].rsplit('.',1)[1]
+        resizeImage(imageName, imageExt, inPath, outPath, basewidth, imgQuality, optimize)
     
-iterateFolder("images/", "new_images/", 800, 70, True)
+iterateFolder("images/", "new_images/", 800, 90, True)
