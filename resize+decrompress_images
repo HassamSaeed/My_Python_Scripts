@@ -1,3 +1,9 @@
+# This script does 4 things:
+# 1. loops through all images from an input diretcory directory
+# 2. Then resizes the images according to the given size
+# 3. Then decompress the images to reduce their sizes
+# 4. And lastly it saves them in the output folder.
+
 from PIL import Image
 import os
 
