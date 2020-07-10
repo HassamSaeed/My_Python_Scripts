@@ -18,7 +18,7 @@ def resizeImage(imageName, imageExt, inPath, outPath, basewidth, imgQuality, opt
     non_transparent.paste(img,(0,0),img)
     non_transparent.save(outPath+imageName+'.jpg', quality=imgQuality, optimize=optimize)
 
-def iterateFolder(inPath,outPath,baseWidth, imgQuality, optimize):
+def iterateFolder(inPath,outPath,basewidth, imgQuality, optimize):
     for image_path in os.listdir(inPath):
         input_path = os.path.join(inPath, image_path)
         imageName = input_path.split('/',1)[1].rsplit('.',1)[0]
